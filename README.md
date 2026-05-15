@@ -57,6 +57,28 @@ Tests
 npm run test
 ```
 
+Ejecución con Docker (sin Node local)
+
+1. Construir la imagen:
+
+```bash
+docker build -t nestjs-hexagonal:latest .
+```
+
+2. Ejecutar la aplicación (puerto 3000):
+
+```bash
+docker run --rm -p 3000:3000 nestjs-hexagonal:latest
+```
+
+O usando `docker-compose`:
+
+```bash
+docker-compose up --build
+```
+
+Con esto, cualquier persona puede clonar el repo y ejecutar la app sin instalar Node.
+
 Cómo está implementado el almacenamiento
 
 - `src/infrastructure/adapters/persistence/in-memory-user.repository.ts`: repositorio en memoria, útil para pruebas y desarrollo rápido.
