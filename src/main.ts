@@ -1,23 +1,31 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { AppModule } from './app.module';
 
-async function bootstrap() {
+async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
+
   app.setGlobalPrefix('api');
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    }),
+  );
 
   const config = new DocumentBuilder()
-    .setTitle('NestJS Hexagonal API')
-    .setDescription('API generated from hexagonal architecture skeleton')
-    .setVersion('0.1')
+    .setTitle('Auth API')
+    .setDescription('JWT authentication API using NestJS, PostgreSQL and hexagonal architecture')
+    .setVersion('1.0')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
 
-  await app.listen(3000);
-  console.log('Server started on http://localhost:3000/api');
-  console.log('Swagger UI available at http://localhost:3000/api/docs');
+  await app.listen(process.env.PORT ?? 3000);
 }
 
-bootstrap();
+void bootstrap();
