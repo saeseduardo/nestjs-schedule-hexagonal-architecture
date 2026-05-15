@@ -10,4 +10,7 @@ export class TypeormUserEntity {
 
   @Column()
   email: string;
+
+  @Column({ nullable: true })
+  password: string | null;
 }
